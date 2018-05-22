@@ -95,19 +95,22 @@
 										<a class="btn btn-danger" data-toggle="modal" href='#delete-announcement-<?=$announcement['id']?>'>Delete</a>
 										<div class="modal fade" id="delete-announcement-<?=$announcement['id']?>">
 											<div class="modal-dialog">
-												<div class="modal-content">
-													<div class="modal-header">
-														<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-														<h4 class="modal-title">Delete <?=$announcement['title']?></h4>
+												<form action="/dashboard/announcements/<?=$announcement['id']?>" method="POST">
+													<input type="hidden" name="_METHOD" value="DELETE"/>
+													<div class="modal-content">
+														<div class="modal-header">
+															<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+															<h4 class="modal-title">Delete <?=$announcement['title']?></h4>
+														</div>
+														<div class="modal-body">
+															Are you sure you want to delete <strong><?=$announcement['title']?></strong>?
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+															<button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+														</div>
 													</div>
-													<div class="modal-body">
-														Are you sure you want to delete <strong><?=$announcement['title']?></strong>?
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-														<button type="button" class="btn btn-danger">Delete</button>
-													</div>
-												</div>
+												</form>
 											</div>
 										</div>
 									</td>

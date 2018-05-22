@@ -52,7 +52,7 @@ $app->get('/', function (Request $request, Response $response) {
      $response = $this->view->render($response, 'dashboard.phtml', compact('announcements'));
 
     return $response;
-    
+
 })->setName('dashboard');
 
 $app->post('/login', function (Request $request, Response $response) {
@@ -90,6 +90,20 @@ $app->post('/announcements', function (Request $request, Response $response) {
 
     return $response->withRedirect($this->router->pathFor('dashboard'));
 });
+
+$app->delete('/announcements/{id}', function ($request, $response, $args) {
+    
+    $this->logger->addInfo('Delete announcement');
+
+    $id = (int)$args['id'];
+
+    $stmt = $this->db->prepare('DELETE FROM announcements WHERE id=:id');
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+
+    return $response->withRedirect('/dashboard', 301);
+
+})->setName('announcements.delete');
 
 
 function moveUploadedFile($directory, UploadedFile $uploadedFile)
