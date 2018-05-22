@@ -42,7 +42,11 @@ $app->get('/', function (Request $request, Response $response) {
 
      $this->logger->addInfo('Dashboard');
 
-     $response = $this->view->render($response, 'dashboard.phtml', []);
+     $stmt = $this->db->prepare("SELECT * FROM announcements ORDER BY created_at DESC");
+     $stmt->execute();
+     $announcements = $stmt->fetchAll();
+
+     $response = $this->view->render($response, 'dashboard.phtml', compact('announcements'));
 
     return $response;
 });
