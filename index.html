@@ -6,6 +6,7 @@
   <meta charset="utf-8">
   <!-- Viewport Meta Tag -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   
@@ -16,7 +17,6 @@
 
   <link rel="stylesheet" href="style.css">
   <script src="script.js" type="text/javascript"></script>
-  <script src="http://192.168.197.133:3000/hook.js" type="text/javascript"></script>
   <style type="text/css">
   body{
   margin-top:60px;
@@ -205,10 +205,19 @@ padding-top:20px;
 			  <h3 class="text-center">Announcements</h3>
 			</div>
 			<div class="panel-body">
-			<a href="http://bhsi.ac.tz/file/nacte.pdf" target="_blank"><p class="h4"><img src="new.gif">Tangazo kutoka baraza la taifa la elimu ya ufundi(NACTE) kuhusu utaratibu wa kuchangia garama za mitihani ya ktaifa</p></a>
-			<a href="http://bhsi.ac.tz/file/mavazi.pdf" target="_blank"><p class="h4"><img src="new.gif">Mwongozo wa mavazi kwa watumishi wa umma kwa mujibu wa waraka wa utumishi wa umma Na.3 Mwaka 2007</p></a>
-			<!--<a href="#"><p class="h4"><img src="new.gif">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p></a>-->
-			<p><button class="btn btn-primary">More</button></p>
+	
+      <div id="app">
+        <i class="fa fa-spinner fa-pulse fa-5x" v-if="!loaded"></i>
+        <div v-else>
+          <a :href="'/uploads/' + announcement.path" target="_blank" v-for="announcement in announcements">
+            <p class="h4">
+              <img src="new.gif">
+                <span v-html="announcement.title"></span>
+            </p>
+          </a>
+        </div>
+      </div>
+
 			</div>
 		</div>
 		</div>
@@ -347,6 +356,29 @@ $(function () {
 $(function () {
   $('[data-toggle="popover"]').popover()
 })
+</script>
+<script src="/js/vue.min.js"></script>
+<script src="/js/axios.min.js"></script>
+<script>
+  new Vue({
+    el: '#app',
+    data () {
+      return {
+        loaded: false,
+        announcements: []
+      }
+    },
+    mounted () {
+      axios.get('/dashboard/api/announcements')
+        .then(function (response) {
+          this.announcements = response.data;
+          this.loaded = true;
+        }.bind(this))
+        .catch(function (error) {
+          console.log(error);
+        }); 
+    }
+  })
 </script>
 </body>
 </html>
