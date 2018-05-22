@@ -2,6 +2,7 @@
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\UploadedFile;
 
 require '../vendor/autoload.php';
 
@@ -38,6 +39,8 @@ $container['db'] = function ($c) {
 
 $container['view'] = new \Slim\Views\PhpRenderer('templates/');
 
+$container['upload_directory'] = '../uploads';
+
 $app->get('/', function (Request $request, Response $response) {
 
      $this->logger->addInfo('Dashboard');
@@ -49,7 +52,8 @@ $app->get('/', function (Request $request, Response $response) {
      $response = $this->view->render($response, 'dashboard.phtml', compact('announcements'));
 
     return $response;
-});
+    
+})->setName('dashboard');
 
 $app->post('/login', function (Request $request, Response $response) {
 
@@ -65,12 +69,38 @@ $app->post('/login', function (Request $request, Response $response) {
 
 $app->post('/announcements', function (Request $request, Response $response) {
     
+    $this->logger->addInfo('Create announcement');
+
     $data = $request->getParsedBody();
     $announcement_data = [];
     $announcement_data['title'] = filter_var($data['title'], FILTER_SANITIZE_STRING);
-    $files = $request->getUploadedFiles();
-    $files->moveTo('../files');
+    
+    $uploadedFiles = $request->getUploadedFiles();
+    $uploadedFile = $uploadedFiles['file'];
+    $directory = $this->get('upload_directory');
+    if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+        $filename = moveUploadedFile($directory, $uploadedFile);
+        $announcement_data['path'] = $filename;
+    }
 
+    $stmt = $this->db->prepare("INSERT INTO announcements (title, path) VALUES (:title, :path)");
+    $stmt->bindParam(':title', $announcement_data['title']);
+    $stmt->bindParam(':path', $announcement_data['path']);
+    $stmt->execute();
+
+    return $response->withRedirect($this->router->pathFor('dashboard'));
 });
+
+
+function moveUploadedFile($directory, UploadedFile $uploadedFile)
+{
+    $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+    $basename = bin2hex(random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
+    $filename = sprintf('%s.%0.8s', $basename, $extension);
+
+    $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+
+    return $filename;
+}
 
 $app->run();
