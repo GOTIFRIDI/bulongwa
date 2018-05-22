@@ -66,6 +66,7 @@
 				<div role="tabpanel" class="tab-pane active" id="announcements">
 					<h1>Announcements</h1>
 
+					<?php if(count($announcements) > 0): ?>
 					<div class="table-responsive">
 						<table class="table table-hover table-stripped table-bordered">
 							<thead>
@@ -119,6 +120,9 @@
 							</tbody>
 						</table>
 					</div>
+					<?php else: ?>
+						<div class="alert alert-info">No Announcement</div>
+					<?php endif; ?>
 
 					<a class="btn btn-primary" data-toggle="modal" href='#add-announcement'>Create</a>
 					<div class="modal fade" id="add-announcement">
