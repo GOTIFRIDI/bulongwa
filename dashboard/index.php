@@ -198,6 +198,19 @@ $app->delete('/announcements/{id}', function ($request, $response, $args) {
 
 })->add($authm)->setName('announcements.delete');
 
+$app->get('/api/announcements', function ($request, $response, $args) {
+    
+    $this->logger->addInfo('Announcements API');
+
+    $stmt = $this->db->prepare('SELECT * FROM announcements ORDER BY created_at DESC');
+    $stmt->execute();
+
+    $rows = $stmt->fetchAll();
+
+    return $response->withJson($rows);
+
+})->add($authm)->setName('announcements.delete');
+
 
 function moveUploadedFile($directory, UploadedFile $uploadedFile)
 {
