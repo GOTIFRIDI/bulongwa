@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Dashboard</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/dashboard/assets/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/dashboard/assets/css/app.css">
 </head>
@@ -29,10 +30,10 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">User <b class="caret"></b></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> User <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Account</a></li>
-							<li><a href="/dashboard/logout">Logout</a></li>
+							<li><a href="#"><i class="fa fa-flash fa-fw"></i> Account</a></li>
+							<li><a href="/dashboard/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -48,14 +49,22 @@
 			<li class="active">Dashboard</li>
 		</ol>
 
+		<?php if(isset($_SESSION['message']) && !empty($_SESSION['message']) ): ?>
+			<div class="alert alert-success">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				<?=$_SESSION['message']?>
+			</div>
+			<?php $_SESSION['message'] = ''; ?>
+		<?php endif; ?>
+
 		<div role="tabpanel">
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs" role="tablist">
 				<li role="presentation">
-					<a href="#dashboard" aria-controls="dashboard" role="tab" data-toggle="tab">Dashboard</a>
+					<a href="#dashboard" aria-controls="dashboard" role="tab" data-toggle="tab"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
 				</li>
 				<li role="presentation" class="active">
-					<a href="#announcements" aria-controls="announcements" role="tab" data-toggle="tab">Announcements</a>
+					<a href="#announcements" aria-controls="announcements" role="tab" data-toggle="tab"><i class="fa fa-bullhorn fa-fw"></i> Announcements</a>
 				</li>
 			</ul>
 		
@@ -153,7 +162,7 @@
 										</div>
 									</td>
 									<td>
-										<a class="btn btn-danger" data-toggle="modal" href='#delete-announcement-<?=$announcement['id']?>'>Delete</a>
+										<a class="btn btn-danger" data-toggle="modal" href='#delete-announcement-<?=$announcement['id']?>'><i class="fa fa-trash"></i> Delete</a>
 										<div class="modal fade" id="delete-announcement-<?=$announcement['id']?>">
 											<div class="modal-dialog">
 												<form action="/dashboard/announcements/<?=$announcement['id']?>" method="POST">
@@ -167,7 +176,7 @@
 															Are you sure you want to delete <strong><?=$announcement['title']?></strong>?
 														</div>
 														<div class="modal-footer">
-															<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+															<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 															<button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
 														</div>
 													</div>
@@ -240,8 +249,8 @@
 		</div>
 	</footer>
 	
-	<script src="dashboard/assets/js/jquery.min.js"></script>
-	<script src="dashboard/assets/js/bootstrap.min.js"></script>
-	<script src="dashboard/assets/js/app.js"></script>
+	<script src="/dashboard/assets/js/jquery.min.js"></script>
+	<script src="/dashboard/assets/js/bootstrap.min.js"></script>
+	<script src="/dashboard/assets/js/app.js"></script>
 </body>
 </html>

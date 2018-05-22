@@ -140,6 +140,8 @@ $app->post('/announcements', function (Request $request, Response $response) {
     $stmt->bindParam(':visible', $announcement_data['visible']);
     $stmt->execute();
 
+    $_SESSION['message'] = 'Announcement successfully created';
+
     return $response->withRedirect('/dashboard', 301);
 })->add($authm);
 
@@ -184,6 +186,8 @@ $app->patch('/announcements/{id}', function ($request, $response, $args) {
     $stmt->bindParam(':visible', $announcement_data['visible']);
     $stmt->execute();
 
+    $_SESSION['message'] = 'Announcement successfully updated';
+
     return $response->withRedirect('/dashboard', 301);
 
 })->add($authm)->setName('announcements.update');
@@ -197,6 +201,8 @@ $app->delete('/announcements/{id}', function ($request, $response, $args) {
     $stmt = $this->db->prepare('DELETE FROM announcements WHERE id=:id');
     $stmt->bindParam(':id', $id);
     $stmt->execute();
+
+    $_SESSION['message'] = 'Announcement successfully deleted';
 
     return $response->withRedirect('/dashboard', 301);
 
