@@ -13,6 +13,7 @@
         "illuminate/database": "5.0.33",
         "slim/slim": "^3.0",
         "monolog/monolog": "^1.23",
-        "slim/php-view": "^2.2"
+        "slim/php-view": "^2.2",
+        "robmorgan/phinx": "^0.9.2"
     }
 }
