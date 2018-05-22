@@ -12,7 +12,15 @@
 
 - Clone the repo
 
+```
+git clone https://github.com/GOTIFRIDI/bulongwa.git
+```
+
 - Install php dependencies
+
+```
+composer install
+```
 
 - Copy configuration files
 
