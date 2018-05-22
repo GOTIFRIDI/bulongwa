@@ -47,6 +47,18 @@ $app->get('/', function (Request $request, Response $response) {
     return $response;
 });
 
+$app->post('/login', function (Request $request, Response $response) {
+
+     $this->logger->addInfo('Login');
+
+     $data = $request->getParsedBody();
+     $login_data = [];
+     $login_data['email'] = filter_var($data['email'], FILTER_SANITIZE_STRING);
+     $login_data['password'] = filter_var($data['password'], FILTER_SANITIZE_STRING);
+
+    return $login_data;
+});
+
 $app->post('/announcements', function (Request $request, Response $response) {
     
     $data = $request->getParsedBody();
