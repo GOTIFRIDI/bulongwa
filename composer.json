@@ -1,0 +1,12 @@
+{
+    "name": "josephmtinangi/bulongwa",
+    "description": "A website for Bulongwa Health Sciences Institute",
+    "type": "project",
+    "authors": [
+        {
+            "name": "josephmtinangi",
+            "email": "josephmtinangi@gmail.com"
+        }
+    ],
+    "require": {}
+}
