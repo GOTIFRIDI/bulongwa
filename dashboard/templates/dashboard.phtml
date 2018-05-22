@@ -1,1 +1,62 @@
-<h1>Dashboard</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Dashboard</title>
+	<link rel="stylesheet" href="dashboard/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="dashboard/assets/css/app.css">
+</head>
+<body>
+
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/dashboard">Dashboard</a>
+			</div>
+	
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/dashboard/announcements">Announcements</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">User <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Account</a></li>
+							<li><a href="#">Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div>
+	</nav>
+
+	<div class="container">
+		<ol class="breadcrumb">
+			<li>
+				<a href="/dashboard">Home</a>
+			</li>
+			<li class="active">Dashboard</li>
+		</ol>
+	</div>
+
+	<footer>
+		<div class="container text-center">
+			<h4>Bulongwa Health Sciences Institute</h4>
+			<p>&copy; <?=date('Y')?> All Rights Reserved</p>
+		</div>
+	</footer>
+	
+	<script src="dashboard/assets/js/jquery.min.js"></script>
+	<script src="dashboard/assets/js/bootstrap.min.js"></script>
+	<script src="dashboard/assets/js/app.js"></script>
+</body>
+</html>
