@@ -47,4 +47,14 @@ $app->get('/', function (Request $request, Response $response) {
     return $response;
 });
 
+$app->post('/announcements', function (Request $request, Response $response) {
+    
+    $data = $request->getParsedBody();
+    $announcement_data = [];
+    $announcement_data['title'] = filter_var($data['title'], FILTER_SANITIZE_STRING);
+    $files = $request->getUploadedFiles();
+    $files->moveTo('../files');
+
+});
+
 $app->run();

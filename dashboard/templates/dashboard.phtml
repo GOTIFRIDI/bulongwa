@@ -46,8 +46,78 @@
 			</li>
 			<li class="active">Dashboard</li>
 		</ol>
-	</div>
 
+		<div role="tabpanel">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a href="#dashboard" aria-controls="dashboard" role="tab" data-toggle="tab">Dashboard</a>
+				</li>
+				<li role="presentation">
+					<a href="#announcements" aria-controls="announcements" role="tab" data-toggle="tab">Announcements</a>
+				</li>
+			</ul>
+		
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="dashboard">
+					<h1>Dashboard</h1>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="announcements">
+					<h1>Announcements</h1>
+
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>Title</th>
+									<th>Content</th>
+									<th>Edit</th>
+									<th>Delete</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<a class="btn btn-primary" data-toggle="modal" href='#add-announcement'>Create</a>
+					<div class="modal fade" id="add-announcement">
+						<div class="modal-dialog">
+							<form action="/dashboard/announcements" method="POST">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										<h4 class="modal-title">Create Announcement</h4>
+									</div>
+									<div class="modal-body">
+										<div class="form-group">
+											<label for="title">Title</label>
+											<input type="text" name="title" id="title" class="form-control" required>
+										</div>
+										<div class="form-group">
+											<label for="file">File</label>
+											<input type="file" name="file" id="file" required>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary">Submit</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+	</div>
 
 
 	<footer>
