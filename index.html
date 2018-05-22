@@ -207,15 +207,21 @@ padding-top:20px;
 			<div class="panel-body">
 	
       <div id="app">
-        <i class="fa fa-spinner fa-pulse fa-5x" v-if="!loaded"></i>
-        <div v-else>
-          <a :href="'/uploads/' + announcement.path" target="_blank" v-for="announcement in announcements">
-            <p class="h4">
-              <img src="new.gif">
-                <span v-html="announcement.title"></span>
-            </p>
-          </a>
-        </div>
+        <marquee direction = "up" scrollamount="2" height="250" scrolldelay="1" onmouseover="this.stop()"
+                   onmouseout="this.start()" style="margin-top: 0px; margin-left: 6px;" class="style41">
+          
+          <i class="fa fa-spinner fa-pulse fa-5x" v-if="!loaded"></i>
+          <div v-else>
+            <a :href="'/uploads/' + announcement.path" target="_blank" v-for="announcement in announcements">
+              <p class="h4">
+                <img src="new.gif">
+                  <span v-html="announcement.title"></span>
+              </p>
+              <cite>{{ announcement.created_at }}</cite>
+            </a>
+          </div>
+        
+        </marquee>
       </div>
 
 			</div>

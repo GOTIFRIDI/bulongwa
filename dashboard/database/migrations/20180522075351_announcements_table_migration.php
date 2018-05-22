@@ -10,6 +10,7 @@ class AnnouncementsTableMigration extends AbstractMigration
         $users = $this->table('announcements');
         $users->addColumn('title', 'string')
               ->addColumn('path', 'string')
+              ->addColumn('visible', 'boolean', ['default' => false])
               ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
               ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
               ->save();

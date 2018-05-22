@@ -4,8 +4,8 @@
 	<meta charset="UTF-8">
 	<title>Dashboard</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
-	<link rel="stylesheet" href="dashboard/assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="dashboard/assets/css/app.css">
+	<link rel="stylesheet" href="/dashboard/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/dashboard/assets/css/app.css">
 </head>
 <body>
 
@@ -75,6 +75,7 @@
 									<th>SN</th>
 									<th>Title</th>
 									<th>File</th>
+									<th>Visible</th>
 									<th>Created</th>
 									<th>Updated</th>
 									<th>Edit</th>
@@ -89,6 +90,13 @@
 									<td><?=$announcement['title']?></td>
 									<td>
 										<a href="/uploads/<?=$announcement['path']?>" target="_blank"><i class="fa fa-eye"></i> View</a>
+									</td>
+									<td>
+										<?php if($announcement['visible']): ?>
+											<span class="label label-success">Yes</span>
+										<?php else: ?>
+											<span class="label label-danger">No</span>
+										<?php endif; ?>
 									</td>
 									<td><?=$announcement['created_at']?></td>
 									<td><?=$announcement['updated_at']?></td>
@@ -111,7 +119,29 @@
 															<div class="form-group">
 																<label for="file">File (Leave empty if you don't want to change the file)</label>
 																<input type="file" name="file" id="file">
-															</div>															
+															<div class="form-group">
+																<label for="visible">Visibility</label>
+																<div class="radio">
+																	<label>
+																		<input type="radio" name="visible" value="1"
+																		<?php if($announcement['visible'] == 1): ?>
+																			checked
+																		<?php endif; ?>
+																		>
+																		Visible 
+																	</label>
+																</div>
+																<div class="radio">
+																	<label>
+																		<input type="radio" name="visible" value="0"
+																		<?php if($announcement['visible'] == 0): ?>
+																			checked
+																		<?php endif; ?>
+																		>
+																		Hidden 
+																	</label>
+																</div>
+															</div>															</div>															
 														</div>
 														<div class="modal-footer">
 															<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -171,6 +201,21 @@
 										<div class="form-group">
 											<label for="file">File</label>
 											<input type="file" name="file" id="file" required>
+										</div>
+										<div class="form-group">
+											<label for="visible">Visibility</label>
+											<div class="radio">
+												<label>
+													<input type="radio" name="visible" value="1">
+													Visible
+												</label>
+											</div>
+											<div class="radio">
+												<label>
+													<input type="radio" name="visible" value="0" checked="checked">
+													Hidden
+												</label>
+											</div>
 										</div>
 									</div>
 									<div class="modal-footer">

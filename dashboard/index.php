@@ -124,6 +124,7 @@ $app->post('/announcements', function (Request $request, Response $response) {
     $data = $request->getParsedBody();
     $announcement_data = [];
     $announcement_data['title'] = filter_var($data['title'], FILTER_SANITIZE_STRING);
+    $announcement_data['visible'] = filter_var($data['visible'], FILTER_SANITIZE_STRING);
     
     $uploadedFiles = $request->getUploadedFiles();
     $uploadedFile = $uploadedFiles['file'];
@@ -133,9 +134,10 @@ $app->post('/announcements', function (Request $request, Response $response) {
         $announcement_data['path'] = $filename;
     }
 
-    $stmt = $this->db->prepare("INSERT INTO announcements (title, path) VALUES (:title, :path)");
+    $stmt = $this->db->prepare("INSERT INTO announcements (title, path, visible) VALUES (:title, :path, :visible)");
     $stmt->bindParam(':title', $announcement_data['title']);
     $stmt->bindParam(':path', $announcement_data['path']);
+    $stmt->bindParam(':visible', $announcement_data['visible']);
     $stmt->execute();
 
     return $response->withRedirect('/dashboard', 301);
@@ -159,6 +161,7 @@ $app->patch('/announcements/{id}', function ($request, $response, $args) {
     $data = $request->getParsedBody();
     $announcement_data = [];
     $announcement_data['title'] = filter_var($data['title'], FILTER_SANITIZE_STRING);  
+    $announcement_data['visible'] = filter_var($data['visible'], FILTER_SANITIZE_STRING);
 
     $uploadedFiles = $request->getUploadedFiles();
     if(isset($uploadedFiles['file'])){
@@ -170,7 +173,7 @@ $app->patch('/announcements/{id}', function ($request, $response, $args) {
         }
     }      
 
-    $stmt = $this->db->prepare('UPDATE announcements SET title=:title, path=:path WHERE id=:id');
+    $stmt = $this->db->prepare('UPDATE announcements SET title=:title, path=:path, visible=:visible WHERE id=:id');
     $stmt->bindParam(':title', $announcement_data['title']);
     if(isset($announcement_data['path'])){
         $stmt->bindParam(':path', $announcement_data['path']);
@@ -178,6 +181,7 @@ $app->patch('/announcements/{id}', function ($request, $response, $args) {
         $stmt->bindParam(':path', $row['path']);
     }
     $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':visible', $announcement_data['visible']);
     $stmt->execute();
 
     return $response->withRedirect('/dashboard', 301);
@@ -202,7 +206,7 @@ $app->get('/api/announcements', function ($request, $response, $args) {
     
     $this->logger->addInfo('Announcements API');
 
-    $stmt = $this->db->prepare('SELECT * FROM announcements ORDER BY created_at DESC');
+    $stmt = $this->db->prepare('SELECT * FROM announcements WHERE visible=true ORDER BY created_at DESC');
     $stmt->execute();
 
     $rows = $stmt->fetchAll();
