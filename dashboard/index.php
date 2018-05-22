@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use Slim\Http\UploadedFile;
@@ -18,6 +20,20 @@ $config['db']['pass']   = $_ENV['DB_PASSWORD'];
 $config['db']['dbname'] = $_ENV['DB_DATABASE'];
 
 $app = new \Slim\App(['settings' => $config]);
+
+$authm = function ($request, $response, $next) {
+    
+    // $response->getBody()->write('BEFORE');
+
+    if(!isset($_SESSION['email'])) {
+        return $response->withRedirect('/dashboard/login', 301);
+    }
+
+    $response = $next($request, $response);
+    // $response->getBody()->write('AFTER');
+
+    return $response;
+};
 
 $container = $app->getContainer();
 
@@ -53,7 +69,16 @@ $app->get('/', function (Request $request, Response $response) {
 
     return $response;
 
-})->setName('dashboard');
+})->add($authm)->setName('dashboard');
+
+$app->get('/login', function (Request $request, Response $response) {
+
+     $this->logger->addInfo('Login');
+
+     $response = $this->view->render($response, 'auth/login.phtml', []);
+
+     return $response;
+});
 
 $app->post('/login', function (Request $request, Response $response) {
 
@@ -64,7 +89,32 @@ $app->post('/login', function (Request $request, Response $response) {
      $login_data['email'] = filter_var($data['email'], FILTER_SANITIZE_STRING);
      $login_data['password'] = filter_var($data['password'], FILTER_SANITIZE_STRING);
 
-    return $login_data;
+     $email = $login_data['email'];
+     $password = sha1($login_data['password']);
+
+     $stmt = $this->db->prepare("SELECT * FROM users WHERE email=:email AND password=:password LIMIT 1");
+     $stmt->bindParam(':email', $email);
+     $stmt->bindParam(':password', $password);
+     $stmt->execute();
+
+     if ($stmt->rowCount() != 1) {
+        $_SESSION['error'] = 'Invalid email or password';
+        return $response->withRedirect('/dashboard/login', 301);
+     }
+
+     $row = $stmt->fetch();
+     $_SESSION['email'] = $row['email'];
+
+    return $response->withRedirect('/dashboard', 301);
+});
+
+$app->get('/logout', function (Request $request, Response $response) {
+
+    $this->logger->addInfo('Logout');
+
+    $_SESSION = [];
+
+    return $response->withRedirect('/dashboard/login', 301);
 });
 
 $app->post('/announcements', function (Request $request, Response $response) {
@@ -89,7 +139,7 @@ $app->post('/announcements', function (Request $request, Response $response) {
     $stmt->execute();
 
     return $response->withRedirect('/dashboard', 301);
-});
+})->add($authm);
 
 $app->patch('/announcements/{id}', function ($request, $response, $args) {
     
@@ -132,7 +182,7 @@ $app->patch('/announcements/{id}', function ($request, $response, $args) {
 
     return $response->withRedirect('/dashboard', 301);
 
-})->setName('announcements.update');
+})->add($authm)->setName('announcements.update');
 
 $app->delete('/announcements/{id}', function ($request, $response, $args) {
     
@@ -146,7 +196,7 @@ $app->delete('/announcements/{id}', function ($request, $response, $args) {
 
     return $response->withRedirect('/dashboard', 301);
 
-})->setName('announcements.delete');
+})->add($authm)->setName('announcements.delete');
 
 
 function moveUploadedFile($directory, UploadedFile $uploadedFile)

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Login</title>
+	<link rel="stylesheet" href="/dashboard/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/dashboard/assets/css/app.css">
+</head>
+<body>
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-4 col-sm-offset-4">
+				<h1>Login</h1>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Enter your details to login</h3>
+					</div>
+					<div class="panel-body">
+
+						<?php if(isset($_SESSION['error'])): ?>
+							<div class="alert alert-danger"><?=$_SESSION['error']?></div>
+						<?php endif; ?>
+
+						<form action="/dashboard/login" method="POST">
+							<div class="form-group">
+								<label for="email">Email</label>
+								<input type="email" name="email" id="email" class="form-control" placeholder="Email" required>
+							</div>
+							<div class="form-group">
+								<label for="password">Password</label>
+								<input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+							</div>
+							<button type="submit" class="btn btn-primary">Take me in</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
