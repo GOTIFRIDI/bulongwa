@@ -88,7 +88,7 @@ $app->post('/announcements', function (Request $request, Response $response) {
     $stmt->bindParam(':path', $announcement_data['path']);
     $stmt->execute();
 
-    return $response->withRedirect($this->router->pathFor('dashboard'));
+    return $response->withRedirect('/dashboard', 301);
 });
 
 $app->delete('/announcements/{id}', function ($request, $response, $args) {

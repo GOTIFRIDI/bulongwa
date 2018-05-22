@@ -86,7 +86,9 @@
 								<tr>
 									<td><?=$i++?>.</td>
 									<td><?=$announcement['title']?></td>
-									<td><?=$announcement['path']?></td>
+									<td>
+										<a href="/uploads/<?=$announcement['path']?>" target="_blank"><i class="fa fa-eye"></i> View</a>
+									</td>
 									<td><?=$announcement['created_at']?></td>
 									<td><?=$announcement['updated_at']?></td>
 									<td>
