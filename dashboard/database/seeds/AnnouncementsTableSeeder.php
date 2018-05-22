@@ -20,9 +20,9 @@ class AnnouncementsTableSeeder extends AbstractSeed
          for ($i = 0; $i < 5; $i++) {
             $data[] = [
                 'title'      => $faker->sentence,
-                'path'         => $faker->file('/tmp', '/files'),
+                'path'       => $faker->uuid . '.pdf',
             ];
          }
-         $this->insert('users', $data);
+         $this->insert('announcements', $data);
     }
 }
