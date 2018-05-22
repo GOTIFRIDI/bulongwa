@@ -36,10 +36,13 @@ $container['db'] = function ($c) {
     return $pdo;
 };
 
-$app->get('/', function (Request $request, Response $response) {
-    $response->getBody()->write("Hello");
+$container['view'] = new \Slim\Views\PhpRenderer('templates/');
 
-     $this->logger->addInfo('Something interesting happened');
+$app->get('/', function (Request $request, Response $response) {
+
+     $this->logger->addInfo('Dashboard');
+
+     $response = $this->view->render($response, 'dashboard.phtml', []);
 
     return $response;
 });
